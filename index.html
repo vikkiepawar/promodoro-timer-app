@@ -32,6 +32,7 @@
             <button id="reset-btn">Reset</button>
         </section>
 
+
         <section id="settings">
             <label>
                 Pomodoro (min):
@@ -47,8 +48,20 @@
                 Long Break (min):
                 <input type="number" id="long-break-time" value="15">
             </label>
-        </section>
 
+            <label>
+              Alert Sound:
+               <select id="sound-select">
+                  <option value="bell1.mp3">Bell 1</option>
+                  <option value="chime2.mp3">Chime 2</option>
+                  <option value="alert.mp3">Alert</option>
+                </select>
+
+            </label>
+
+           <audio id="alert-audio"></audio>
+
+        </section>
     </div>
 
 </body>
