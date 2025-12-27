@@ -14,16 +14,13 @@ body {
     color: #ffffff;
 }
 
-main {
+#app {
     width: 100%;
     max-width: 420px;
     padding: 25px;
     border-radius: 18px;
-
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
@@ -42,21 +39,15 @@ section {
     margin-bottom: 20px;
 }
 
-section h2 {
-    font-size: 1rem;
-    margin-bottom: 8px;
-    opacity: 0.9;
-}
-
 #timer-display {
     text-align: center;
     font-size: 3.2rem;
     font-weight: 600;
-    margin: 15px 0;
     letter-spacing: 2px;
 }
 
-#timer-controls {
+#modes,
+#controls {
     display: flex;
     gap: 10px;
 }
@@ -68,10 +59,8 @@ button {
     border-radius: 10px;
     border: none;
     cursor: pointer;
-
     background: rgba(255, 255, 255, 0.25);
     color: #fff;
-
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
 }
@@ -81,7 +70,7 @@ button:hover {
     transform: translateY(-2px);
 }
 
-#settings-section label {
+#settings label {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -89,30 +78,38 @@ button:hover {
     font-size: 0.9rem;
 }
 
-#settings-section input {
-    width: 65px;
+#settings input,
+#settings select {
+    width: 70px;
     padding: 6px;
     border-radius: 8px;
     border: none;
     outline: none;
-
     background: rgba(255, 255, 255, 0.3);
-    color: #000;
 }
 
-#progress-section {
+#progress {
     text-align: center;
-    font-size: 0.95rem;
 }
 
-footer {
-    text-align: center;
-    font-size: 0.8rem;
-    opacity: 0.8;
+#progress-bar {
+    width: 100%;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+#progress-fill {
+    height: 100%;
+    width: 0%;
+    background-color: #4caf50;
+    transition: width 0.3s ease;
 }
 
 @media (max-width: 480px) {
-    main {
+    #app {
         border-radius: 0;
         height: 100vh;
     }
