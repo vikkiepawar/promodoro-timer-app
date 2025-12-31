@@ -5,141 +5,134 @@ const startBtn = document.getElementById("start-btn");
 const pauseBtn = document.getElementById("pause-btn");
 const resetBtn = document.getElementById("reset-btn");
 
-const pomodoroModeBtn = document.getElementById("pomodoro-mode");
-const shortBreakModeBtn = document.getElementById("short-break-mode");
-const longBreakModeBtn = document.getElementById("long-break-mode");
+const pomodoroBtn = document.getElementById("pomodoro-mode");
+const shortBtn = document.getElementById("short-break-mode");
+const longBtn = document.getElementById("long-break-mode");
 
 const pomodoroInput = document.getElementById("pomodoro-time");
-const shortBreakInput = document.getElementById("short-break-time");
-const longBreakInput = document.getElementById("long-break-time");
+const shortInput = document.getElementById("short-break-time");
+const longInput = document.getElementById("long-break-time");
+
+const soundSelect = document.getElementById("sound-select");
+const alertAudio = document.getElementById("alert-audio");
 
 const pomodoroCountEl = document.getElementById("pomodoro-count");
 const progressFill = document.getElementById("progress-fill");
 const resetProgressBtn = document.getElementById("reset-progress-btn");
 
-const soundSelect = document.getElementById("sound-select");
-const alertAudio = document.getElementById("alert-audio");
-
 let timer = null;
 let isRunning = false;
 let mode = "pomodoro";
-let pomodoroCycleCount = 0;
+let pomodoroCycle = 0;
 
-let completedPomodoros =
-  parseInt(localStorage.getItem("completedPomodoros")) || 0;
-
-let timeLeft = pomodoroInput.value * 60;
+let completedPomodoros = parseInt(localStorage.getItem("completedPomodoros")) || 0;
 
 const savedSound = localStorage.getItem("pomodoroSound") || "bell1.mp3";
 soundSelect.value = savedSound;
 alertAudio.src = `sounds/${savedSound}`;
 
-soundSelect.addEventListener("change", () => {
-  alertAudio.src = `sounds/${soundSelect.value}`;
-  localStorage.setItem("pomodoroSound", soundSelect.value);
-});
+function getDuration() {
+    if (mode === "pomodoro") return pomodoroInput.value * 60;
+    if (mode === "shortBreak") return shortInput.value * 60;
+    return longInput.value * 60;
+}
+
+let timeLeft = getDuration();
 
 function updateDisplay() {
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
-  minutesEl.textContent = String(minutes).padStart(2, "0");
-  secondsEl.textContent = String(seconds).padStart(2, "0");
+    minutesEl.textContent = String(Math.floor(timeLeft / 60)).padStart(2, "0");
+    secondsEl.textContent = String(timeLeft % 60).padStart(2, "0");
 }
 
-function updateProgressUI() {
-  pomodoroCountEl.textContent = completedPomodoros;
-  const maxPomodoros = 8;
-  const percent = Math.min(
-    (completedPomodoros / maxPomodoros) * 100,
-    100
-  );
-  progressFill.style.width = `${percent}%`;
+function updateProgress() {
+    pomodoroCountEl.textContent = completedPomodoros;
+    progressFill.style.width = Math.min((completedPomodoros / 8) * 100, 100) + "%";
 }
 
-function getDuration() {
-  if (mode === "pomodoro") return pomodoroInput.value * 60;
-  if (mode === "shortBreak") return shortBreakInput.value * 60;
-  return longBreakInput.value * 60;
+function playSound() {
+    alertAudio.currentTime = 0;
+    alertAudio.play();
 }
 
-function playAlertSound() {
-  alertAudio.currentTime = 0;
-  alertAudio.play();
-}
-
-function switchMode(newMode) {
-  mode = newMode;
-  timeLeft = getDuration();
-  updateDisplay();
-}
-
-function autoNextMode() {
-  if (mode === "pomodoro") {
-    completedPomodoros++;
-    pomodoroCycleCount++;
-    localStorage.setItem("completedPomodoros", completedPomodoros);
-    updateProgressUI();
-    mode = pomodoroCycleCount % 4 === 0 ? "longBreak" : "shortBreak";
-  } else {
-    mode = "pomodoro";
-  }
-  timeLeft = getDuration();
-  updateDisplay();
+function setMode(newMode) {
+    clearInterval(timer);
+    isRunning = false;
+    mode = newMode;
+    timeLeft = getDuration();
+    updateDisplay();
 }
 
 function startTimer() {
-  if (isRunning) return;
-  isRunning = true;
-  timer = setInterval(() => {
-    if (timeLeft > 0) {
-      timeLeft--;
-      updateDisplay();
-    } else {
-      clearInterval(timer);
-      isRunning = false;
-      playAlertSound();
-      autoNextMode();
-      startTimer();
-    }
-  }, 1000);
+    if (isRunning) return;
+    isRunning = true;
+
+    timer = setInterval(() => {
+        if (timeLeft > 0) {
+            timeLeft--;
+            updateDisplay();
+        } else {
+            clearInterval(timer);
+            isRunning = false;
+            playSound();
+
+            if (mode === "pomodoro") {
+                completedPomodoros++;
+                localStorage.setItem("completedPomodoros", completedPomodoros);
+                updateProgress();
+                pomodoroCycle++;
+                mode = pomodoroCycle % 4 === 0 ? "longBreak" : "shortBreak";
+            } else {
+                mode = "pomodoro";
+            }
+
+            timeLeft = getDuration();
+            updateDisplay();
+            startTimer();
+        }
+    }, 1000);
 }
 
 function pauseTimer() {
-  clearInterval(timer);
-  isRunning = false;
+    clearInterval(timer);
+    isRunning = false;
 }
 
 function resetTimer() {
-  clearInterval(timer);
-  isRunning = false;
-  mode = "pomodoro";
-  pomodoroCycleCount = 0;
-  timeLeft = pomodoroInput.value * 60;
-  updateDisplay();
+    clearInterval(timer);
+    isRunning = false;
+    mode = "pomodoro";
+    pomodoroCycle = 0;
+    timeLeft = getDuration();
+    updateDisplay();
 }
 
-[pomodoroInput, shortBreakInput, longBreakInput].forEach(input => {
-  input.addEventListener("change", () => {
-    if (!isRunning && mode === "pomodoro") {
-      timeLeft = pomodoroInput.value * 60;
-      updateDisplay();
-    }
-  });
+soundSelect.addEventListener("change", () => {
+    alertAudio.src = `sounds/${soundSelect.value}`;
+    localStorage.setItem("pomodoroSound", soundSelect.value);
 });
+
+[pomodoroInput, shortInput, longInput].forEach(input => {
+    input.addEventListener("change", () => {
+        if (!isRunning) {
+            timeLeft = getDuration();
+            updateDisplay();
+        }
+    });
+});
+
+pomodoroBtn.addEventListener("click", () => setMode("pomodoro"));
+shortBtn.addEventListener("click", () => setMode("shortBreak"));
+longBtn.addEventListener("click", () => setMode("longBreak"));
 
 startBtn.addEventListener("click", startTimer);
 pauseBtn.addEventListener("click", pauseTimer);
 resetBtn.addEventListener("click", resetTimer);
 
-pomodoroModeBtn.addEventListener("click", () => switchMode("pomodoro"));
-shortBreakModeBtn.addEventListener("click", () => switchMode("shortBreak"));
-longBreakModeBtn.addEventListener("click", () => switchMode("longBreak"));
-
 resetProgressBtn.addEventListener("click", () => {
-  completedPomodoros = 0;
-  localStorage.removeItem("completedPomodoros");
-  updateProgressUI();
+    completedPomodoros = 0;
+    localStorage.removeItem("completedPomodoros");
+    updateProgress();
 });
 
 updateDisplay();
-updateProgressUI();
+updateProgress();

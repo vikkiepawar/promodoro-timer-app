@@ -1,66 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pomodoro Timer</title>
-  <link rel="stylesheet" href="style.css"/>
-  <script defer src="script.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
 </head>
 <body>
 
-<div class="app">
+<main id="app">
 
-  <h1>Pomodoro Timer</h1>
+    <header>
+        <h1>Pomodoro Timer</h1>
+    </header>
 
-  <div class="timer pulse">
-    <span id="minutes">25</span>:<span id="seconds">00</span>
-  </div>
+    <section id="timer-display">
+        <span id="minutes">25</span>:<span id="seconds">00</span>
+    </section>
 
-  <div class="modes">
-    <button data-mode="pomodoro">Pomodoro</button>
-    <button data-mode="short">Short Break</button>
-    <button data-mode="long">Long Break</button>
-  </div>
+    <section id="modes">
+        <button id="pomodoro-mode">Pomodoro</button>
+        <button id="short-break-mode">Short Break</button>
+        <button id="long-break-mode">Long Break</button>
+    </section>
 
-  <div class="controls">
-    <button id="start">Start</button>
-    <button id="pause">Pause</button>
-    <button id="reset">Reset</button>
-  </div>
+    <section id="controls">
+        <button id="start-btn">Start</button>
+        <button id="pause-btn">Pause</button>
+        <button id="reset-btn">Reset</button>
+    </section>
 
-  <section class="settings">
-  <h3>Timer Settings</h3>
+    <section id="progress">
+        <p>Completed Pomodoros: <span id="pomodoro-count">0</span></p>
+        <div id="progress-bar">
+            <div id="progress-fill"></div>
+        </div>
+        <button id="reset-progress-btn">Reset Progress</button>
+    </section>
 
-  <label>
-    Pomodoro (minutes)
-    <input type="number" id="pomodoro-input" value="25" min="1">
-  </label>
+    <section id="settings">
+        <label>
+            Pomodoro (min)
+            <input type="number" id="pomodoro-time" value="25" min="1">
+        </label>
 
-  <label>
-    Short Break (minutes)
-    <input type="number" id="short-input" value="5" min="1">
-  </label>
+        <label>
+            Short Break (min)
+            <input type="number" id="short-break-time" value="5" min="1">
+        </label>
 
-  <label>
-    Long Break (minutes)
-    <input type="number" id="long-input" value="15" min="1">
-  </label>
-  </section>
+        <label>
+            Long Break (min)
+            <input type="number" id="long-break-time" value="15" min="1">
+        </label>
 
+        <label>
+            Alert Sound
+            <select id="sound-select">
+                <option value="bell1.mp3">Bell</option>
+                <option value="chime2.mp3">Chime</option>
+                <option value="alert.mp3">Alert</option>
+            </select>
+        </label>
 
-  <section class="progress">
-    <h3>Productivity</h3>
-    <p>Completed Pomodoros: <strong id="count">0</strong></p>
+        <audio id="alert-audio"></audio>
+    </section>
 
-    <div class="progress-bar">
-      <div class="progress-fill"></div>
-    </div>
-
-    <button id="reset-progress" class="danger">Reset Progress</button>
-  </section>
-
-</div>
+</main>
 
 </body>
 </html>
