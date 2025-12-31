@@ -1,120 +1,141 @@
+:root {
+  --bg: #121212;
+  --card: #1e1e1e;
+  --primary: #1db954;
+  --danger: #ff4d4d;
+  --text: #ffffff;
+  --muted: #b3b3b3;
+  --radius: 12px;
+  --transition: all 0.3s ease;
+}
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", Arial, sans-serif;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
 }
 
 body {
-    min-height: 100vh;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #ffffff;
+  background: linear-gradient(135deg, #000, #1a1a1a);
+  color: var(--text);
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
 }
 
-#app {
-    width: 100%;
-    max-width: 420px;
-    padding: 25px;
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(15px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+.app {
+  background: var(--card);
+  padding: 2rem;
+  border-radius: var(--radius);
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  animation: fadeIn 0.8s ease;
 }
 
-header {
-    text-align: center;
-    margin-bottom: 20px;
+h1 {
+  margin-bottom: 1rem;
 }
 
-header h1 {
-    font-size: 1.9rem;
-    letter-spacing: 1px;
+.timer {
+  font-size: 3rem;
+  margin: 1rem 0;
+  transition: var(--transition);
 }
 
-section {
-    margin-bottom: 20px;
+.pulse {
+  animation: pulse 1.5s infinite;
 }
 
-#timer-display {
-    text-align: center;
-    font-size: 3.2rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-}
-
-#modes,
-#controls {
-    display: flex;
-    gap: 10px;
-}
-
-button {
-    flex: 1;
-    padding: 12px;
-    font-size: 1rem;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.25);
-    color: #fff;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
+.modes button,
+.controls button,
+.progress button {
+  background: none;
+  border: 1px solid var(--primary);
+  color: var(--text);
+  padding: 0.5rem 0.75rem;
+  margin: 0.25rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: var(--transition);
 }
 
 button:hover {
-    background: rgba(255, 255, 255, 0.4);
-    transform: translateY(-2px);
+  background: var(--primary);
+  color: #000;
 }
 
-#settings label {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    font-size: 0.9rem;
+.controls button {
+  width: 80px;
 }
 
-#settings input,
-#settings select {
-    width: 70px;
-    padding: 6px;
-    border-radius: 8px;
-    border: none;
-    outline: none;
-    background: rgba(255, 255, 255, 0.3);
+.progress {
+  margin-top: 1.5rem;
 }
 
-#progress {
-    text-align: center;
+.progress-bar {
+  background: #333;
+  height: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 0.5rem 0;
 }
 
-#progress-bar {
-    width: 100%;
-    height: 12px;
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 6px;
-    overflow: hidden;
-    margin: 10px 0;
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--primary);
+  transition: width 0.6s ease;
 }
 
-#progress-fill {
-    height: 100%;
-    width: 0%;
-    background-color: #4caf50;
-    transition: width 0.3s ease;
+.danger {
+  border-color: var(--danger);
 }
 
-@media (max-width: 480px) {
-    #app {
-        border-radius: 0;
-        height: 100vh;
-    }
+.danger:hover {
+  background: var(--danger);
+  color: #000;
+}
 
-    #timer-display {
-        font-size: 2.6rem;
-    }
+.settings {
+  margin-top: 1.5rem;
+  text-align: left;
+}
+
+.settings h3 {
+  text-align: center;
+  margin-bottom: 0.75rem;
+}
+
+.settings label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.settings input {
+  width: 70px;
+  padding: 0.3rem;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  background: #333;
+  color: white;
+  transition: var(--transition);
+}
+
+.settings input:focus {
+  background: #444;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
