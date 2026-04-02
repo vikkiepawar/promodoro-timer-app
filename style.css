@@ -1,108 +1,173 @@
 :root {
-    --bg: linear-gradient(135deg, #667eea, #764ba2);
-    --glass: rgba(255, 255, 255, 0.18);
-    --border: rgba(255, 255, 255, 0.25);
-    --accent: #4caf50;
+  --bg: linear-gradient(135deg, #667eea, #764ba2);
+  --glass: rgba(255, 255, 255, 0.18);
+  --border: rgba(255, 255, 255, 0.25);
+  --accent: #4caf50;
+  --text: #ffffff;
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
 }
 
 body {
-    min-height: 100vh;
-    background: var(--bg);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text);
 }
 
 #app {
-    width: 100%;
-    max-width: 420px;
-    padding: 25px;
-    border-radius: 18px;
-    background: var(--glass);
-    backdrop-filter: blur(18px);
-    border: 1px solid var(--border);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-    animation: fadeIn 0.6s ease;
+  width: 100%;
+  max-width: 420px;
+  padding: 25px;
+  border-radius: 18px;
+  background: var(--glass);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.6s ease;
 }
 
 header {
-    text-align: center;
-    margin-bottom: 15px;
+  text-align: center;
+  margin-bottom: 15px;
 }
 
-#timer-display {
-    text-align: center;
-    font-size: 3rem;
-    margin: 15px 0;
+#timer {
+  text-align: center;
+  margin: 15px 0;
 }
 
-#modes, #controls {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
+#time {
+  font-size: 3.5rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.mode-selector {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.mode {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mode.active {
+  background: var(--accent);
+  font-weight: bold;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
 }
 
 button {
-    flex: 1;
-    padding: 10px;
-    border-radius: 10px;
-    border: none;
-    background: rgba(255,255,255,0.25);
-    color: #fff;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 button:hover {
-    background: rgba(255,255,255,0.4);
-    transform: translateY(-2px);
-}
-
-#settings label {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    font-size: 0.9rem;
-}
-
-#settings input, #settings select {
-    width: 70px;
-    padding: 5px;
-    border-radius: 8px;
-    border: none;
+  background: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
 }
 
 #progress {
-    text-align: center;
-    margin-bottom: 15px;
+  text-align: center;
+  margin-bottom: 15px;
 }
 
 #progress-bar {
-    width: 100%;
-    height: 10px;
-    background: rgba(255,255,255,0.3);
-    border-radius: 6px;
-    overflow: hidden;
-    margin: 8px 0;
+  width: 100%;
+  height: 10px;
+  margin: 8px 0;
 }
 
-#progress-fill {
-    height: 100%;
-    width: 0%;
-    background: var(--accent);
-    transition: width 0.3s ease;
+progress::-webkit-progress-bar {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+}
+
+progress::-webkit-progress-value {
+  background: var(--accent);
+  border-radius: 6px;
+}
+
+progress::-moz-progress-bar {
+  background: var(--accent);
+  border-radius: 6px;
+}
+
+#settings {
+  margin-top: 10px;
+}
+
+#settings h3 {
+  margin-bottom: 10px;
+}
+
+#settings form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#settings label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+#settings input,
+#settings select {
+  width: 80px;
+  padding: 6px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 480px) {
+  #time {
+    font-size: 2.5rem;
+  }
+
+  button {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
 }
