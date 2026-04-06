@@ -21,12 +21,15 @@ let timer = null;
 let isRunning = false;
 let mode = "pomodoro";
 let cycle = 0;
+let endTime = null;
 
-let completedPomodoros = parseInt(localStorage.getItem("completedPomodoros")) || 0;
+let completedPomodoros =
+  parseInt(localStorage.getItem("completedPomodoros")) || 0;
 
 let audioUnlocked = false;
 
-soundSelect.value = localStorage.getItem("pomodoroSound") || "bell1.mp3";
+soundSelect.value =
+  localStorage.getItem("pomodoroSound") || "bell1.mp3";
 alertAudio.src = "sounds/" + soundSelect.value;
 
 function getDuration() {
@@ -40,12 +43,14 @@ let timeLeft = getDuration();
 function updateDisplay() {
   const m = Math.floor(timeLeft / 60);
   const s = timeLeft % 60;
-  timeEl.textContent = `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  timeEl.textContent =
+    `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
 }
 
 function updateProgress() {
   pomodoroCountEl.textContent = completedPomodoros;
-  progressBar.value = Math.min(completedPomodoros, 4);
+  progressBar.max = 4;
+  progressBar.value = completedPomodoros % 4;
 }
 
 function unlockAudio() {
@@ -57,6 +62,8 @@ function unlockAudio() {
     }).catch(() => {});
   }
 }
+
+document.body.addEventListener("click", unlockAudio);
 
 function playSound() {
   if (!audioUnlocked) return;
@@ -77,55 +84,82 @@ function setMode(newMode) {
   timeLeft = getDuration();
   setActiveMode();
   updateDisplay();
+  updateButtons();
+}
+
+function updateButtons() {
+  startBtn.disabled = isRunning;
+  pauseBtn.disabled = !isRunning;
+}
+
+function handleSessionEnd() {
+  clearInterval(timer);
+  isRunning = false;
+  playSound();
+
+  if (mode === "pomodoro") {
+    completedPomodoros++;
+    localStorage.setItem("completedPomodoros", completedPomodoros);
+    updateProgress();
+    cycle++;
+    mode = cycle % 4 === 0 ? "long" : "short";
+  } else {
+    mode = "pomodoro";
+  }
+
+  setActiveMode();
+  timeLeft = getDuration();
+  updateDisplay();
+  updateButtons();
+  startTimer();
 }
 
 function startTimer() {
   if (isRunning) return;
 
-  unlockAudio();
   isRunning = true;
+  endTime = Date.now() + timeLeft * 1000;
+  updateButtons();
 
   timer = setInterval(() => {
-    if (timeLeft > 0) {
-      timeLeft--;
-      updateDisplay();
-    } else {
-      clearInterval(timer);
-      isRunning = false;
+    const remaining = Math.max(
+      0,
+      Math.round((endTime - Date.now()) / 1000)
+    );
 
-      playSound();
+    timeLeft = remaining;
+    updateDisplay();
 
-      if (mode === "pomodoro") {
-        completedPomodoros++;
-        localStorage.setItem("completedPomodoros", completedPomodoros);
-        updateProgress();
-        cycle++;
-        mode = cycle % 4 === 0 ? "long" : "short";
-      } else {
-        mode = "pomodoro";
-      }
-
-      setActiveMode();
-      timeLeft = getDuration();
-      updateDisplay();
-      startTimer();
+    if (remaining === 0) {
+      handleSessionEnd();
     }
-  }, 1000);
+  }, 250);
 }
 
 function pauseTimer() {
   clearInterval(timer);
   isRunning = false;
+
+  timeLeft = Math.max(
+    0,
+    Math.round((endTime - Date.now()) / 1000)
+  );
+
+  updateDisplay();
+  updateButtons();
 }
 
 function resetTimer() {
   clearInterval(timer);
   isRunning = false;
+
   mode = "pomodoro";
   cycle = 0;
+
   setActiveMode();
   timeLeft = getDuration();
   updateDisplay();
+  updateButtons();
 }
 
 modeButtons.forEach(btn => {
@@ -145,6 +179,7 @@ resetProgressBtn.addEventListener("click", () => {
 [pomodoroInput, shortInput, longInput].forEach(input => {
   input.addEventListener("change", () => {
     localStorage.setItem(input.id, input.value);
+
     if (!isRunning) {
       timeLeft = getDuration();
       updateDisplay();
@@ -165,4 +200,5 @@ window.addEventListener("load", () => {
   updateDisplay();
   updateProgress();
   setActiveMode();
+  updateButtons();
 });
