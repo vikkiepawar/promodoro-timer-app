@@ -26,11 +26,9 @@ let completedPomodoros = parseInt(localStorage.getItem("completedPomodoros")) ||
 
 let audioUnlocked = false;
 
-// INIT
 soundSelect.value = localStorage.getItem("pomodoroSound") || "bell1.mp3";
 alertAudio.src = "sounds/" + soundSelect.value;
 
-// FUNCTIONS
 function getDuration() {
   if (mode === "pomodoro") return pomodoroInput.value * 60;
   if (mode === "short") return shortInput.value * 60;
@@ -130,7 +128,6 @@ function resetTimer() {
   updateDisplay();
 }
 
-// EVENTS
 modeButtons.forEach(btn => {
   btn.addEventListener("click", () => setMode(btn.dataset.mode));
 });
@@ -160,7 +157,6 @@ soundSelect.addEventListener("change", () => {
   localStorage.setItem("pomodoroSound", soundSelect.value);
 });
 
-// LOAD
 window.addEventListener("load", () => {
   pomodoroInput.value = localStorage.getItem("pomodoro-time") || 25;
   shortInput.value = localStorage.getItem("short-break-time") || 5;
