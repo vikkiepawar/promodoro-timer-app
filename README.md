@@ -1,33 +1,77 @@
-# Pomodoro Timer
+# 🍅 Pomodoro Timer Web App
 
-A web-based Pomodoro timer application to help manage productivity cycles.
+A clean, responsive, and customizable Pomodoro Timer built using HTML, CSS, and JavaScript to improve focus and productivity using the Pomodoro technique.
 
-## Features
-- Customizable timer durations for Pomodoro, Short Break, and Long Break.
-- Visual countdown display with progress bar.
-- Selectable alert sounds.
-- Tracks completed Pomodoros and progress.
-- Pause, reset, and auto-cycle modes.
+---
 
-## Usage Instructions
-1. Open `index.html` in your browser or access the live deployment.
-2. Select a mode: Pomodoro, Short Break, or Long Break.
-3. Adjust durations using the settings panel if needed.
-4. Click **Start** to begin the timer.
-5. Timer auto-switches between modes after completion.
-6. Select an alert sound from the dropdown to get audio notifications.
+## 🚀 Live Demo
 
-## Deployment
-- This application can be deployed via GitHub Pages:
-  1. Push your repo to GitHub.
-  2. Go to **Settings > Pages**.
-  3. Select the **main branch** and `/root` folder as the source.
-  4. Save and open the provided link.
+👉 https://vikkiepawar.github.io/promodoro-timer-app/
 
-## Known Issues
-- Some browsers may block autoplay of alert sounds; user interaction may be required.
-- Duplicate timer elements in HTML may cause confusion (ensure only one set is active).
+---
 
-## Tech Stack
-- HTML, CSS, JavaScript (Vanilla)
-- LocalStorage for tracking Pomodoro counts
+## ✨ Features
+
+* ⏱️ Start, Pause, and Reset timer
+* 🔁 Automatic switching between Pomodoro and Break sessions
+* ⚙️ Custom durations (Pomodoro, Short Break, Long Break)
+* 🔊 Selectable alert sounds
+* 📊 Progress tracking for completed sessions
+* 💾 Data persistence using Local Storage
+* 📱 Responsive design for mobile and desktop
+
+---
+
+## 🛠️ Tech Stack
+
+* HTML5
+* CSS3 (Glassmorphism UI)
+* JavaScript (Vanilla JS)
+
+---
+
+## 📂 Project Structure
+
+```
+.
+├── index.html
+├── style.css
+├── script.js
+└── sounds/
+    ├── bell1.mp3
+    ├── chime2.mp3
+    └── alert.mp3
+```
+
+---
+
+## ⚙️ How to Run Locally
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/vikkiepawar/promodoro-timer-app.git
+```
+
+2. Open `index.html` in your browser
+
+---
+
+## 📌 Known Issues
+
+* Audio playback may require initial user interaction due to browser autoplay restrictions
+
+---
+
+## 📈 Future Improvements
+
+* Dark / Light mode toggle
+* Task management integration
+* Browser notifications
+* Advanced analytics dashboard
+
+---
+
+## 👨‍💻 Author
+
+**Vikram**
